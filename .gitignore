@@ -1,7 +1,12 @@
 # DS
 **/*.DS_Store
 *.ipynb_checkpoints
-*/.ipynb_checkpoints/*
+*.ipynb_checkpoints/*
+**/*.ipython/*
+**/*.jupyter/*
+**/*.local/*
+**/scikit_learn_data/*
+**/logs/*
 # Git
 .git
 .gitignore
