@@ -109,7 +109,7 @@ def train_model() -> None:
 
     # Обучить модель
     mlflow.set_experiment(experiment_name="MedHouseExp")
-    with mlflow.start_run(run_name="my_third_run", experiment_id = "135293466297753618"):
+    with mlflow.start_run(run_name="my_third_run"):
         # Обучить модель
         model = LinearRegression()
         model.fit(X_train_fitted, y_train)
@@ -136,6 +136,6 @@ task_download_data = PythonOperator(task_id="task_download_data",
 
 task_train_model = PythonOperator(task_id="task_train_model",
                                  python_callable=train_model,
-                                 dag=dag, provide_context=True)
+                                 dag=dag)
 
 task_download_data >> task_train_model 
