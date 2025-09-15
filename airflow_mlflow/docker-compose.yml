@@ -140,16 +140,17 @@ services:
     image: ghcr.io/mlflow/mlflow:v2.15.1
     environment:
       MLFLOW_S3_ENDPOINT_URL: https://storage.yandexcloud.net
-      AWS_ACCESS_KEY_ID: # YOUR KEY HERE
-      AWS_SECRET_ACCESS_KEY:# YOUR KEY HERE
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
       AWS_DEFAULT_REGION: ru-central1
+      AWS_BUCKET_NAME: ${AWS_BUCKET_NAME}
     command:
       - bash
       - -c
       - |
         pip install boto3 --quiet
         mlflow server --host 0.0.0.0 \
-            --default-artifact-root s3://YOURBUCKET/mlflow --serve-artifacts
+            --default-artifact-root s3://${AWS_BUCKET_NAME}/mlflow --serve-artifacts
     expose:
       - "5000"
     ports:
@@ -169,8 +170,8 @@ services:
     environment:
       MLFLOW_TRACKING_URI: http://mlflow-service:5000
       AWS_ENDPOINT_URL: https://storage.yandexcloud.net
-      AWS_ACCESS_KEY_ID: # YOUR KEY HERE 
-      AWS_SECRET_ACCESS_KEY: # YOUR KEY HERE 
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY} 
       AWS_DEFAULT_REGION: ru-central1
     depends_on:
       - mlflow-service
@@ -180,7 +181,7 @@ services:
       - |
         pip install mlflow==2.15.1 --quiet
         pip install boto3 --quiet
-        start-notebook.sh --NotebookApp.token=''
+        start-notebook.sh --NotebookApp.token='${JUPYTER_TOKEN:-}'
 
 volumes:
   postgres-db-volume:
